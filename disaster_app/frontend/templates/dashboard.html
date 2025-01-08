@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-container">
+  <br>
+  <h1>Disaster Prediction Dashboard</h1>
+  <form action="{{ url_for('generate_predict') }}" method="POST">
+
+    <label for="disaster-type" style="font-size: 20px; font-weight: bold;">Select Disaster Type:</label>
+    <select name="disaster_type" id="disaster-type">
+      <option value="earthquake">Earthquake</option>
+      <option value="flood">Flood</option>
+    </select>
+    <br>
+    <br>
+
+    <label for="data" style="font-size: 20px; font-weight: bold;">Enter Data (e.g., seismic activity, water levels):</label>
+    <input type="text" id="data" name="data" required>
+    <br>
+    <br>
+
+    <label for="location"  style="font-size: 20px; font-weight: bold;">Enter Location:</label>
+    <input type="text" id="location" name="location" required>
+    <br>
+    <br>
+
+    <button type="submit" style="height: 70px; width: 200px; font-size: 24px; padding: 0 20px;">Predict</button>
+
+  </form>
+
+  <div class="prediction-result">
+    {% if prediction %}
+      <h2>Prediction Result:</h2>
+      <p>{{ prediction }}</p>
+    {% endif %}
+    
+    {% if alert %}
+  <div class="alert alert-{{ alert.severity|lower }}">
+    <strong>Alert for {{ alert.location }}:</strong> {{ alert.message }}
+  </div>
+    {% endif %}
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<div class="media-panel" style="background-color: #e6f7ff; padding: 20px;">
+  <h2>Disaster Preparedness Videos</h2>
+  <div class="video-container">
+    <!--Example of embedding a YouTube video -->
+    <iframe 
+      width="560" 
+      height="315" 
+      src="https://www.youtube.com/embed/USLHmwvpjX8"
+      title="Disaster Preparedness Video" 
+      frameborder="0" 
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+      allowfullscreen>
+    </iframe>
+  </div>
+</div> 
+<div class="preparedness-section">
+  <h2>Preparedness Tips</h2>
+  <div class="accordion">
+    <button class="accordion-button">Earthquake Safety</button>
+    <div class="accordion-content">
+      <h3>Key Tips to Prepare for an Earthquake:</h3>
+      <ul>
+        <li>Secure heavy furniture and appliances to prevent them from falling during shaking.</li>
+        <li>Ensure that your home is structurally sound and meets earthquake building codes.</li>
+        <li>Keep emergency supplies (water, food, flashlight, first aid kit) readily available.</li>
+        <li>Practice "Drop, Cover, and Hold On" drills with family members.</li>
+        <li>Know the emergency evacuation routes in your area.</li>
+        <li>Keep your phone charged and have a power bank ready in case of power outages.</li>
+      </ul>
+    </div>
+    <button class="accordion-button">Flood Preparedness</button>
+    <div class="accordion-content">
+      <h3>Steps to Take in Case of Flooding:</h3>
+      <ul>
+        <li>Move valuable items to higher ground to prevent water damage.</li>
+        <li>Learn the flood risk in your area and identify flood-prone zones.</li>
+        <li>Install sump pumps and check drainage systems to minimize water accumulation.</li>
+        <li>Keep important documents (ID, insurance, etc.) in a waterproof container.</li>
+        <li>Have a plan to evacuate to higher ground if flooding occurs.</li>
+        <li>Keep an emergency kit with food, water, and medications for at least 72 hours.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="facts-section">
+  <div class="fact-card">
+    <h3>Fact 1</h3>
+    <p>Did you know that 60% of the world's population is at risk from natural disasters?</p>
+  </div>
+  <div class="fact-card">
+    <h3>Fact 2</h3>
+    <p>Floods are responsible for more deaths worldwide than any other natural disaster.</p>
+  </div>
+  <div class="fact-card">
+    <h3>Fact 3</h3>
+    <p>Earthquake early warning systems can provide up to 60 seconds of warning to help save lives.</p>
+  </div>
+</div>
+<br>
+<br>
+
+
+<style>
+  .preparedness-section {
+    background-color: #e6f7ff;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .accordion-button {
+    background-color: #008cba;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    outline: none;
+  }
+
+  .accordion-content {
+    padding: 15px;
+    display: contents;
+    background-color: #f5f5f5;
+    border-top: 1px solid ;
+  }
+
+  .alert-section {
+    background-color: #ffe6e6;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+
+  .alert-item {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-left: 4px solid #ff0000;
+  }
+  .dashboard-container {
+    padding: 20px;
+    background-color: #e6f7ff;
+    border-radius: 10px;
+  }
+  .dashboard-container form {
+    margin-top: 20px;
+  }
+
+  .media-panel {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+
+  .media-panel h2 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .video-container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .video-container iframe {
+    max-width: 100%;
+    height: auto;
+    border: none;
+  }
+
+  /* Style for prediction message */
+  .prediction-msg {
+    color: #28a745; /* Green */
+    font-weight: bold;
+  }
+
+  /* Style for alert message */
+  .alert-msg {
+    color: #dc3545; /* Red */
+    font-weight: bold;
+  }
+
+  /* Style for different severity alert colors */
+  .alert-High {
+    background-color: #ffcccc;
+  }
+
+  .alert-Medium {
+    background-color: #fff3cd;
+  }
+
+  .alert-Low {
+    background-color: #d4edda;
+  
+  }
+
+  .facts-section {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.fact-card {
+  background-color: #e6f7ff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 30%;  /* Adjust based on your design */
+}
+
+.fact-card h3 {
+  font-size: 18px;
+  color: #000;
+}
+
+.fact-card p {
+  font-size: 16px;
+  color: #555;
+}
+
+</style>
+
+
+
+{% endblock %}
