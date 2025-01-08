@@ -1,3 +1,4 @@
+
 # Disaster Management System
 
 ## Introduction
@@ -47,5 +48,6 @@ This project aims to develop an Intelligent Disaster Management System (IDMS) th
 
    ```bash
    git add README.md
+# First-Project1
+Intelligence Disaster Management System
 
->>>>>>> 6d3e8880 (first commit)
