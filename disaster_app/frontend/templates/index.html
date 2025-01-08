@@ -1,0 +1,33 @@
+<!-- app/frontend/templates/index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+
+<br>
+<style>
+.bg {
+  background: url('/static/images/earthquake.jpg') no-repeat center center;
+  background-size: cover; /* Ensures the image covers the entire container */
+  width: 100%;
+  height: 100vh; /* Full height of the viewport */
+}
+
+</style>
+<div class="bg">
+
+  <div class="sub_title" style="font-size: 30px;">
+    This system uses real-time data and AI to predict and manage disasters, enhancing preparedness and response.
+  </div>
+</div>
+<div class="center">
+  <div class="title">Intelligence Disater Management System</div>
+  </div>
+<div class="btns">
+    <a href="/login">
+      <button id="loginBtn">Login</button>
+    </a>
+    
+  </div>
+
+{% endblock %}

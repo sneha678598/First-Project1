@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Map Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.76.0/L.Control.Locate.min.css" />
+    <style>
+        #map { height: 900px; }
+
+        /* Ensure that controls do not overlap */
+        .leaflet-control-geocoder, .leaflet-control-locate {
+            z-index: 1000;
+        }
+    </style>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-locatecontrol/0.76.0/L.Control.Locate.min.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+      // Initialize the map
+      var map = L.map('map').setView([20.5937, 78.9629], 5); // Example: Centered on India
+      
+      // Add tile layer (OpenStreetMap example)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+
+      // Add a marker with a popup
+      var marker = L.marker([20.5937, 78.9629]).addTo(map)
+        .bindPopup('Reported spot for disaster awareness.')
+        .openPopup();
+
+      // Handle map click to add markers
+      map.on('click', function(e) {
+        var latlng = e.latlng;
+        var newMarker = L.marker([latlng.lat, latlng.lng]).addTo(map)
+          .bindPopup('Reported location. Lat: ' + latlng.lat + ', Lng: ' + latlng.lng)
+          .openPopup();
+
+        // Send this data to server if needed
+      });
+
+      // Add the geocoder search control
+      var geocoder = L.Control.geocoder({
+        defaultMarkGeocode: false
+      })
+      .on('markgeocode', function(e) {
+        var bbox = e.geocode.bbox;
+        var poly = L.polygon([ 
+          [bbox.getSouthEast().lat, bbox.getSouthEast().lng], 
+          [bbox.getNorthEast().lat, bbox.getNorthEast().lng], 
+          [bbox.getNorthWest().lat, bbox.getNorthWest().lng], 
+          [bbox.getSouthWest().lat, bbox.getSouthWest().lng]
+        ]).addTo(map);
+        map.fitBounds(poly.getBounds());
+      })
+      .addTo(map);
+
+      // Add the geolocation button
+      L.control.locate({
+        position: 'topright',
+        setView: 'once',
+        flyTo: true
+      }).addTo(map);
+
+      console.log("Map, geocoder, and locate control initialized.");
+    </script>
+</body>
+</html>
